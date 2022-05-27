@@ -12,6 +12,8 @@ builder.Services
    .AddSingleton<IDataProvider, DataProvider>(_ =>
        new DataProvider(builder.Configuration.GetConnectionString("Db")));
 
+
+
 var app = builder.Build();
 
 
