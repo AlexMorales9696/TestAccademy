@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Model;
+using WebApplication1.SQL;
 
 namespace WebApplication1.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route(template: "Spettatore")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -12,10 +14,12 @@ namespace WebApplication1.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IDataProvider _dataProvider;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IDataProvider dataProvider)
         {
             _logger = logger;
+            _dataProvider = dataProvider;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -29,5 +33,13 @@ namespace WebApplication1.Controllers
             })
             .ToArray();
         }
-    }
-}
+
+        [HttpPut(template: "Add")]
+        public void Add(Spettatore spettatore)
+        {
+            
+                    _dataProvider.Add(spettatore);
+         }
+
+        }
+}   

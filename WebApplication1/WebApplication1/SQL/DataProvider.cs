@@ -11,35 +11,52 @@ namespace WebApplication1.SQL
             _connectionString = connectionString;
         }
 
-        public int Add(Spettatore spettatore)
+        public void  Add(Spettatore spettatore)
         {
-            var query = @"INSERT INTO Spectators
-                                   ([Nome]
-                                   ,[Cognome]
-                                   ,[Età]
-                                    ,[IdBiglietto])
-                             VALUES
-                                   (@Nome
-                                   ,@Cognome
-                                   ,@età
-                                   ,@IdBigliettoS";
+
+
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+
+            var query = @"INSERT INTO Spettatore([IdBiglietto],[Nome],[Cognome],[Età],[Sconto])
+                        VALUES(@IdBiglietto,@Nome,@Cognome,@età,@Sconto)";
+                                  
             
             
-                using var connection = new SqlConnection(_connectionString);
-                connection.Open();
                 using var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("Name", spettatore.Nome);
+                command.Parameters.AddWithValue("Nome", spettatore.Nome);
                 command.Parameters.AddWithValue("Cognome", spettatore.Cognome);
                 command.Parameters.AddWithValue("Età", spettatore.Età);
                 command.Parameters.AddWithValue("IdBiglietto", spettatore.IdBigliettoS);
+            command.Parameters.AddWithValue("Sconto", spettatore.Sconto);
 
-            return Convert.ToInt32(command.ExecuteScalar());
-            }
-            
-
+            command.ExecuteNonQuery();
         }
 
 
 
-    }
+        public bool CheckPosti(SalaCinematografica sala)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            var query = @"select count(*)
+                       from SalaCinematografica 
+                       where PostiDisponibili =0;";
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("PostiDisponibili",sala.PostiDisponibili);
+          
 
+            return Convert.ToInt32(command.ExecuteScalar()) == 1;
+
+
+
+        }
+        public void MesaagioP()
+        {
+            throw new FileNotFoundException(@"Posti Pieni ");
+
+
+
+        }
+}
+}
