@@ -1,0 +1,67 @@
+create database DBCinema
+use DbCinema
+
+
+
+
+CREATE TABLE Film(
+IdFilm INT IDENTITY(1,1)PRIMARY KEY, 
+Autore NVARCHAR(50) NOT NULL,
+Produttore NVARCHAR(50) NOT NULL,
+Genere NVARCHAR(20) NOT NULL,
+Durata DECIMAL(5,2)   NOT NULL,
+OrarioFilm datetime not null,
+);
+
+INSERT INTO Film 
+values('Federico Fellini','Columbia Picture','Azione',3.60,'2022-05-01 07:50:00.000');
+
+
+CREATE TABLE Cinema(
+IdCinema INT IDENTITY(1,1) PRIMARY KEY,
+NomeCinema NVARCHAR(50) NOT NULL,
+Città NVARCHAR(50) NOT NULL,
+)
+INSERT INTO Cinema
+values('Ucci Cinema','Milano');
+
+
+CREATE TABLE SalaCinematografica(
+IdSalaCinematografica INT IDENTITY(1,1) PRIMARY KEY,
+IdFilm int NOT NULL REFERENCES Film,
+IdCinema int NOT NULL REFERENCES Cinema,
+CapacitàMax int  NOT NULL,
+PostiDisponibili INT NOT NULL,
+)
+
+INSERT INTO SalaCinematografica 
+values(1,1,250,200);
+
+
+
+
+
+
+CREATE TABLE Biglietto(
+IdBiglietto INT IDENTITY(1,1) PRIMARY KEY,
+IdSalaCinematografica int NOT NULL REFERENCES SalaCinematografica,
+Posto NVARCHAR (4) not null,
+Prezzo DECIMAL(5,2)   NOT NULL,
+)
+INSERT INTO Biglietto
+values(1,'A2',7.50);
+INSERT INTO Biglietto
+values(1,'A3',7.50);
+
+
+create table Spettatore(
+IdSpettatore INT IDENTITY(1,1) PRIMARY KEY,
+Idbiglietto int NOT NULL REFERENCES Biglietto,
+Nome nvarchar(10),
+Cognome nvarchar(20),
+Età int not null,
+Sconto  INT not null,
+)
+
+INSERT INTO Spettatore
+values(1,'Giovanni','Rossi',18,0);
