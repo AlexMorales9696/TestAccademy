@@ -14,7 +14,7 @@ namespace WebApplication1.SQL
         public void  Add(Spettatore spettatore)
         {
 
-
+            int contatorePerosne = 2;
             using var connection = new SqlConnection(_connectionString);
             connection.Open();
 
@@ -31,6 +31,7 @@ namespace WebApplication1.SQL
             command.Parameters.AddWithValue("Sconto", spettatore.Sconto);
 
             command.ExecuteNonQuery();
+            contatorePerosne++;
         }
 
 
@@ -58,5 +59,29 @@ namespace WebApplication1.SQL
 
 
         }
-}
-}
+        public IEnumerable<SalaCinematografica> SaleCinematograficheByIdCinema( int idCinema)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            var query = "SELECT * FROM SalaCinematografica where IdCinema=@IdCinema ;";
+            using var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("IdCinema", idCinema);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                yield return new SalaCinematografica
+                {
+                    IdSalaCinematografica = int.Parse(reader["IdSalaCinematografica"].ToString()),
+                    IdCinemaS= int.Parse(reader["IdCinema"].ToString()),
+                    IdFilmS = int.Parse(reader["IdFilm"].ToString()),
+                    CapacitàMax = int.Parse(reader["CapacitàMax"].ToString()),
+                    PostiDisponibili= int.Parse(reader["PostiDisponibili"].ToString()),
+                    
+                };
+            }
+        }
+
+    }
+  } 
+

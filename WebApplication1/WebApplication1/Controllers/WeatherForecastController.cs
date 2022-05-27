@@ -5,7 +5,7 @@ using WebApplication1.SQL;
 namespace WebApplication1.Controllers
 {
     [ApiController]
-    [Route(template: "Spettatore")]
+    [Route(template: "Cinema")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -34,12 +34,19 @@ namespace WebApplication1.Controllers
             .ToArray();
         }
 
-        [HttpPut(template: "Add")]
+        [HttpPut(template: "Add/Spettaore")]
         public void Add(Spettatore spettatore)
         {
             
                     _dataProvider.Add(spettatore);
          }
 
+        [HttpGet(template: "GetById/SalaCinematografiche")]
+        public IEnumerable<SalaCinematografica> SaleCinematograficheByIdCinema(int Id)
+        {
+            return _dataProvider.SaleCinematograficheByIdCinema(Id);
         }
+
+
+    }
 }   

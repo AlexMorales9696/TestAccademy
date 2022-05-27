@@ -7,5 +7,6 @@ namespace WebApplication1.SQL
         public void  Add(Spettatore spettatore);
         public bool CheckPosti(SalaCinematografica sala);
         public void MesaagioP();
+        public IEnumerable<SalaCinematografica> SaleCinematograficheByIdCinema(int idCinema);
     }
 }
