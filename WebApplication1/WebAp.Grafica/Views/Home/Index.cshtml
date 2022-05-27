@@ -1,8 +1,45 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using WebApplication1.Model
+@model IEnumerable<Film>
+
+
+@{
+       ViewBag.Title = "Lista Film";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1 class="display-4">Lista Prodotti</h1>
+<p class="text-right">@Html.ActionLink("Compra biglietto","Add")<p/>
+
+    <table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Autore)</th>
+        <th>@Html.DisplayNameFor(model => model.Produttore)</th>
+        <th>@Html.DisplayNameFor(model => model.Genere)</th>
+        <th>@Html.DisplayNameFor(model => model.Durata)</th>
+        <th>@Html.DisplayNameFor(model => model.OrarioFilm)</th>
+    </tr>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var film in Model)
+        {
+            <tr>
+                <td>@film.Autore</td>
+               <td>@film.Produttore</td>
+               <td>@film.Genere</td>
+               <td>@film.Durata</td>
+               <td>@film.OrarioFilm</td>
+                <td>
+                    @Html.ActionLink("Modifica","Edit",new {ID = film.IdFilm})|
+                    @Html.ActionLink("Dettagli","Detail",new {ID = film.IdFilm})|
+                    @Html.ActionLink("Rimuovi","Delete",new {ID = film.IdFilm})
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="5" class="text-center"> Nessun impiegato disponibile</td>
+        </tr>
+    }
+    
+</table>

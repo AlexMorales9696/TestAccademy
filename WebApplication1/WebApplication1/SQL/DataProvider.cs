@@ -81,7 +81,30 @@ namespace WebApplication1.SQL
                 };
             }
         }
+        public IEnumerable<Film> GetFilms()
+        {
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            var query = "SELECT * FROM Film";
+            using var command = new SqlCommand(query, connection);
+
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                yield return new Film
+                {
+                    Autore = (reader["Autore"].ToString()),
+                    Produttore =(reader["Produttore"].ToString()),
+                    Genere = (reader["Genere"].ToString()),
+                    Durata = int.Parse(reader["Durata"].ToString()),
+                    OrarioFilm= DateTime.Parse(reader["OrarioFilm"].ToString()),
+
+                };
+            }
+        }
+
 
     }
-  } 
+} 
 

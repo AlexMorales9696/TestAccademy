@@ -2,21 +2,45 @@
 using System.Diagnostics;
 using WebAp.Grafica.Models;
 
+
+using System.Text.Json;
+using WebApplication1.Model;
+
 namespace WebAp.Grafica.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHttpClientFactory _client;
 
-        public HomeController(ILogger<HomeController> logger)
+        public Stream Message { get; private set; }
+
+        public HomeController(ILogger<HomeController> logger, IHttpClientFactory client)
         {
             _logger = logger;
+            _client = client;
         }
 
-        public IActionResult Index()
+        //[HttpGet]
+        //public async Task<IActionResult> Index()
+        //{
+        //    var client = _client.CreateClient("CinemaApi");
+        //    Message = await client.GetStreamAsync("GetById/SalaCinematografiche");
+        //    var M = JsonSerializer.Deserialize<IEnumerable<SalaCinematografica>>(Message);
+        //    return View(M);
+        //}
+
+
+        [HttpGet]
+        public async Task<IActionResult>  index()
         {
-            return View();
+            var client = _client.CreateClient("CinemaApi");
+            Message = await client.GetStreamAsync("Films");
+            var M = JsonSerializer.Deserialize<IEnumerable<Film>>(Message);
+            return View(M);
+
         }
+
 
         public IActionResult Privacy()
         {

@@ -65,3 +65,10 @@ Sconto  INT not null,
 
 INSERT INTO Spettatore
 values(1,'Giovanni','Rossi',18,0);
+
+select Sum(b.Prezzo)as Totale
+from Biglietto b 
+join SalaCinematografica s on s.IdSalaCinematografica=b.IdSalaCinematografica
+
+select s.CapacitàMax-s.PostiDisponibili as PostiDisponibili
+from SalaCinematografica s
